@@ -123,9 +123,6 @@ static int gpio_chip_hwgpio(const struct gpio_desc *desc)
  */
 static struct gpio_desc *gpio_to_desc(unsigned gpio)
 {
-	if (WARN(!gpio_is_valid(gpio), "invalid GPIO %d\n", gpio))
-		return NULL;
-	else
 		return &gpio_desc[gpio];
 }
 
@@ -659,7 +656,7 @@ static ssize_t export_store(struct class *class,
 	desc = gpio_to_desc(gpio);
 	/* reject invalid GPIOs */
 	if (!desc) {
-		pr_warn("%s: invalid GPIO %ld\n", __func__, gpio);
+		pr_debug("%s: invalid GPIO %ld\n", __func__, gpio);
 		return -EINVAL;
 	}
 
@@ -701,7 +698,7 @@ static ssize_t unexport_store(struct class *class,
 	desc = gpio_to_desc(gpio);
 	/* reject bogus commands (gpio_unexport ignores them) */
 	if (!desc) {
-		pr_warn("%s: invalid GPIO %ld\n", __func__, gpio);
+		pr_debug("%s: invalid GPIO %ld\n", __func__, gpio);
 		return -EINVAL;
 	}
 
@@ -870,7 +867,7 @@ static int gpiod_export_link(struct device *dev, const char *name,
 	int			status = -EINVAL;
 
 	if (!desc) {
-		pr_warn("%s: invalid GPIO\n", __func__);
+		pr_debug("%s: invalid GPIO\n", __func__);
 		return -EINVAL;
 	}
 
@@ -922,7 +919,7 @@ static int gpiod_sysfs_set_active_low(struct gpio_desc *desc, int value)
 	int			status = -EINVAL;
 
 	if (!desc) {
-		pr_warn("%s: invalid GPIO\n", __func__);
+		pr_debug("%s: invalid GPIO\n", __func__);
 		return -EINVAL;
 	}
 
@@ -966,7 +963,7 @@ static void gpiod_unexport(struct gpio_desc *desc)
 	struct device		*dev = NULL;
 
 	if (!desc) {
-		pr_warn("%s: invalid GPIO\n", __func__);
+		pr_debug("%s: invalid GPIO\n", __func__);
 		return;
 	}
 
@@ -1424,7 +1421,7 @@ static int gpiod_request(struct gpio_desc *desc, const char *label)
 	unsigned long		flags;
 
 	if (!desc) {
-		pr_warn("%s: invalid GPIO\n", __func__);
+		pr_debug("%s: invalid GPIO\n", __func__);
 		return -EINVAL;
 	}
 
@@ -1656,7 +1653,7 @@ static int gpiod_direction_input(struct gpio_desc *desc)
 	int			offset;
 
 	if (!desc) {
-		pr_warn("%s: invalid GPIO\n", __func__);
+		pr_debug("%s: invalid GPIO\n", __func__);
 		return -EINVAL;
 	}
 
@@ -1717,7 +1714,7 @@ static int gpiod_direction_output(struct gpio_desc *desc, int value)
 	int offset;
 
 	if (!desc) {
-		pr_warn("%s: invalid GPIO\n", __func__);
+		pr_debug("%s: invalid GPIO\n", __func__);
 		return -EINVAL;
 	}
 
@@ -1791,7 +1788,7 @@ static int gpiod_set_debounce(struct gpio_desc *desc, unsigned debounce)
 	int			offset;
 
 	if (!desc) {
-		pr_warn("%s: invalid GPIO\n", __func__);
+		pr_debug("%s: invalid GPIO\n", __func__);
 		return -EINVAL;
 	}
 
